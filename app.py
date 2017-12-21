@@ -13,8 +13,9 @@ class Todo(db.Model):
 
 @app.route('/')
 def index():
-    todos = Todo.query.all()
-    return render_template('index.html', todos=todos)
+    incomplete = Todo.query.filter_by(complete=False).all()
+    complete = Todo.query.filter_by(complete=True).all()
+    return render_template('index.html', incomplete=incomplete, complete=complete)
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -23,9 +24,13 @@ def add():
     db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/update', methods=['POST'])
-def update():
-    print(request.form)
+@app.route('/complete/<int:id>')
+def complete(id):
+
+    todo = Todo.query.filter_by(id=id).first()
+    todo.complete = True
+    db.session.commit()
+
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

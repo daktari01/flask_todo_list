@@ -67,7 +67,8 @@
             </div>
             <div class="col-md-6 order-1">
                 <div class="p-5">
-                <h2 class="display-4">Todo List</h2>
+                    <h2 class="display-4">Todo List</h2>
+                    <h2 class="display-5">Incomplete Items</h2>
                     <form action="{{ url_for('add') }}" method="POST">
                         <div class="input-group">
                             <input type="text" name="todoitem" class="form-control" placeholder="Add a new todo item ...">
@@ -77,14 +78,19 @@
                         </div>
                     </form>
                     <p></p>
-                    <form action="{{ url_for('update') }}" method="POST">
-                        <ul>
-                        {% for todo in todos %}
-                            <li><input type="checkbox" name="todo_check" value="{{ todo.text }}" class="form-check-input">{{ todo.text }}</li>
-                        {% endfor %}
-                        </ul>
-                        <button type="submit" name="submit_check" class="btn btn-success">Update Items</button>
-                    </form>
+                    <ul>
+                    {% for todo in incomplete %}
+                        <li>{{ todo.text }} | <a href="{{ url_for('complete', id=todo.id) }}">>> complete </a></li>
+                    {% endfor %}
+                    </ul>
+                    <p></p>
+                    <p></p>
+                    <h2 class="display-5">Completed Items</h2>
+                    <ul>
+                    {% for todo in complete %}
+                        <li>{{ todo.text }} </li>
+                    {% endfor %}
+                    </ul>
                 </div>
             </div>
             </div>
